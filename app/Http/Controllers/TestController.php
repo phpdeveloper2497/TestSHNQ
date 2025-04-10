@@ -13,7 +13,7 @@ class TestController extends Controller
 {
     public function start()
     {
-        $questions = Question::inRandomOrder()->take(50)->get();
+        $questions = Question::inRandomOrder()->take(0)->get();
         
         // Load and randomize options for each question
         foreach ($questions as $question) {
@@ -103,6 +103,18 @@ class TestController extends Controller
             });
             
         return view('test.history', compact('attempts'));
+    }
+
+    public function deleteAllResults()
+    {
+        // Delete all test answers first (due to foreign key constraint)
+        TestAnswer::truncate();
+        
+        // Then delete all test attempts
+        TestAttempt::truncate();
+
+        return redirect()->route('test.history')
+            ->with('success', 'Барча натижалар ўчирилди');
     }
 
     private function calculateScore(TestAttempt $testAttempt)

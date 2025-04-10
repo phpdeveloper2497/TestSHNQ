@@ -4,9 +4,17 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
+        <div><h1>СИЗ АЬЛО ДАРАЖАДА УДДАЛАЯПСИЗ 😊</h1></div>
             <div class="card">
-                <div class="card-header">
+               
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h3>БАРЧА НАТИЖАЛАР</h3>
+                    <form action="{{ route('test.deleteAll') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Барча натижаларни ўчиришни хохлайсизми?')">
+                            Натижаларни ўчириш
+                        </button>
+                    </form>
                 </div>
 
                 <div class="card-body">

@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="mt-4">
-                        <a href="{{ route('test.start') }}" class="btn btn-success">Start Test</a>
+                        <a href="{{ route('test.start') }}" class="btn btn-success">ТЕСТНИ БОШЛАШ</a>
                     </div>
                 </div>
             </div>

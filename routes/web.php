@@ -20,7 +20,8 @@ Route::get('/', function () {
 // Test routes
 Route::get('/test', [App\Http\Controllers\TestController::class, 'start'])->name('test.start');
 Route::get('/test/history', [App\Http\Controllers\TestController::class, 'history'])->name('test.history');
-Route::post('/test/{testAttempt}', [App\Http\Controllers\TestController::class, 'submit'])->name('test.submit');
+Route::post('/test/submit/{testAttempt}', [App\Http\Controllers\TestController::class, 'submit'])->name('test.submit');
+Route::post('/test/delete-all', [App\Http\Controllers\TestController::class, 'deleteAllResults'])->name('test.deleteAll');
 Route::get('/test/{testAttempt}/result', [App\Http\Controllers\TestController::class, 'result'])->name('test.result');
 
 // Question management routes

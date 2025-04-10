@@ -6,12 +6,22 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3>Test</h3>
-                    <div id="timer" class="h4">25:00</div>
+                    <h3>ТЕСТ</h3>
+                    <div id="timer" class="h4" style="display: none;">25:00</div>
                 </div>
 
                 <div class="card-body">
-                    <form id="testForm" action="{{ route('test.submit', $testAttempt) }}" method="POST">
+                    <div id="startSection" class="text-center">
+                        <h4 class="mb-4">Хуш келибсиз Ахтам Армонович! </h4>
+                        <h4 class="mb-4">Тест топшириш учун тайёрмисиз?</h4>
+                        <h4 class="mb-4">ОМАД СИЗГА !!!</h4>
+
+                        
+                        <p class="mb-4">Тест вақти: 30 дақиқа</p>
+                        <button type="button" class="btn btn-primary btn-lg" onclick="startTest()">ТЕСТНИ БОШЛАШ</button>
+                    </div>
+
+                    <form id="testForm" action="{{ route('test.submit', $testAttempt) }}" method="POST" style="display: none;">
                         @csrf
                         @foreach($questions as $index => $question)
                             <div class="question-container mb-4">
@@ -43,10 +53,16 @@
 
 @push('scripts')
 <script>
-    let timeLeft = 25 * 60; // 25 minutes in seconds
+    let timeLeft = 30 * 60; // 30 minutes in seconds
     const timerElement = document.getElementById('timer');
-    
-    const timer = setInterval(() => {
+    let timer;
+
+    function startTest() {
+        document.getElementById('startSection').style.display = 'none';
+        document.getElementById('testForm').style.display = 'block';
+        timerElement.style.display = 'block';
+        
+        timer = setInterval(() => {
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
         timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
@@ -63,5 +79,6 @@
             document.getElementById('testForm').submit();
         }
     }
+}
 </script>
 @endpush
