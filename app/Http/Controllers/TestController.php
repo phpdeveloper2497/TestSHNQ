@@ -13,7 +13,11 @@ class TestController extends Controller
 {
     public function start()
     {
-        $questions = Question::inRandomOrder()->take(0)->get();
+        $questions = Question::select('questions.*')
+            ->distinct()
+            ->inRandomOrder()
+            ->take(30)
+            ->get();
         
         // Load and randomize options for each question
         foreach ($questions as $question) {

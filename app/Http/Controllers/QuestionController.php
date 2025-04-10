@@ -9,7 +9,7 @@ class QuestionController extends Controller
 {
     public function index()
     {
-        $questions = Question::with('options')->get();
+        $questions = Question::with('options')->orderBy('id', 'desc')->get();
         return view('questions.index', compact('questions'));
     }
 
@@ -20,25 +20,37 @@ class QuestionController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'question_text' => 'required|min:3',
-            'options' => 'required|array|size:4',
-            'options.*' => 'required|string|min:1',
-            'correct_option' => 'required|integer|min:0|max:3'
-        ]);
-
-        $question = Question::create([
-            'question_text' => $request->question_text
-        ]);
-
-        foreach ($request->options as $index => $optionText) {
-            $question->options()->create([
-                'option_text' => $optionText,
-                'is_correct' => $index === (int)$request->correct_option
+        try {
+            $request->validate([
+                'question_text' => 'required|min:3',
+                'options' => 'required|array|size:4',
+                'options.*' => 'required|string|min:1',
+                'correct_option' => 'required|integer|min:0|max:3'
             ]);
-        }
 
-        return redirect()->route('questions.index')->with('success', 'Question created successfully');
+            $question = Question::create([
+                'question_text' => $request->question_text
+            ]);
+
+            foreach ($request->options as $index => $optionText) {
+                if (!empty($optionText)) {
+                    $question->options()->create([
+                        'option_text' => $optionText,
+                        'is_correct' => $index === (int)$request->correct_option
+                    ]);
+                }
+            }
+
+            return redirect()->route('questions.index')
+                ->with('success', 'Question created successfully');
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->errorInfo[1] == 1062) { // MySQL duplicate entry error code
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['This question already exists']);
+            }
+            throw $e;
+        }
     }
 
     public function edit(Question $question)
