@@ -34,7 +34,7 @@
                                     @enderror
                                 </div>
                             @endfor
-                            <div class="form-text">Камида 2 та жавоб тўлдирилсин. Танланган тўғри жавоб бўш бўлмаслиги шарт.</div>
+                            <div class="form-text">Танланган тўғри жавоб бўш бўлмаслиги шарт.</div>
                             @error('correct_option')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
