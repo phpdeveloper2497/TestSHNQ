@@ -6,7 +6,8 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3>САВОЛЛАР</h3>
+                    <h3>САВОЛЛАР</h3> 
+                    <h4>Базадаги жами саволлар сони: {{ $questions->count() }}</h4>
                     <a href="{{ route('questions.create') }}" class="btn btn-primary">ЯНГИ САВОЛ КУШИШ</a>
                 </div>
 
