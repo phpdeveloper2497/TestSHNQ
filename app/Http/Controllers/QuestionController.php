@@ -22,7 +22,7 @@ class QuestionController extends Controller
 {
     try {
         $request->validate([
-            'question_text' => 'required|min:3',
+            'question_text' => 'required|min:3|unique:questions,question_text',
             'options' => 'required|array|min:2|max:4',
             'options.*' => 'nullable|string',
             'correct_option' => 'required|integer|min:0|max:3'
