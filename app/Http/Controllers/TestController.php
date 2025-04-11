@@ -13,11 +13,20 @@ class TestController extends Controller
 {
     public function start()
     {
-        $questions = Question::select('questions.*')
+        // First get distinct questions
+        $questionIds = Question::select('id')
             ->distinct()
-            ->inRandomOrder()
+            ->pluck('id')
+            ->toArray();
+            
+        // Then randomly select 30 from those IDs
+        $randomIds = collect($questionIds)
+            ->shuffle()
             ->take(30)
-            ->get();
+            ->values();
+            
+        // Finally get the questions with those IDs
+        $questions = Question::whereIn('id', $randomIds)->get();
         
         // Load and randomize options for each question
         foreach ($questions as $question) {
