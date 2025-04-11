@@ -109,7 +109,7 @@ class TestController extends Controller
     public function history()
     {
         $attempts = TestAttempt::with('answers')
-            // ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'desc')
             ->get()
             ->map(function ($attempt) {
                 Log::info('Test attempt duration:', [
