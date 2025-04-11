@@ -37,7 +37,8 @@ class TestController extends Controller
         $testAttempt = TestAttempt::create([
             'started_at' => now(),
         ]);
-        
+        dd($questions->pluck('id'));
+
         return view('test.start', compact('questions', 'testAttempt'));
     }
     
