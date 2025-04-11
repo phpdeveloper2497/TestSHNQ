@@ -7,16 +7,15 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3>ТЕСТ</h3>
-                    <div id="timer" class="h4" style="display: none;">25:00</div>
+                    <div id="timer" class="h4" style="display: none;">30:00</div>
                 </div>
 
                 <div class="card-body">
                     <div id="startSection" class="text-center">
-                        <h4 class="mb-4">Хуш келибсиз Ахтам Армонович! </h4>
+                        <h4 class="mb-4">Хуш келибсиз Ахтам Армонович!</h4>
                         <h4 class="mb-4">Тест топшириш учун тайёрмисиз?</h4>
                         <h4 class="mb-4">ОМАД СИЗГА !!!</h4>
 
-                        
                         <p class="mb-4">Тест вақти: 30 дақиқа</p>
                         <button type="button" class="btn btn-primary btn-lg" onclick="startTest()">ТЕСТНИ БОШЛАШ</button>
                     </div>
@@ -26,7 +25,8 @@
                         @foreach($questions as $index => $question)
                             <div class="question-container mb-4">
                                 <h5>{{ $index + 1 }}. {{ $question->question_text }}</h5>
-                                @foreach($question->options as $option)
+        
+                                @foreach($question->randomOptions as $option)
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" 
                                             name="answers[{{ $question->id }}]" 
@@ -41,8 +41,8 @@
                             </div>
                         @endforeach
                         <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-warning" onclick="submitForm()">Тестни якунлаш</button>
                             <button type="submit" class="btn btn-primary">Жавобларни юбориш</button>
-                            <!-- <button type="button" class="btn btn-secondary" onclick="submitForm()">Вактдан олдин якунлаш</button> -->
                         </div>
                     </form>
                 </div>
@@ -57,28 +57,31 @@
     const timerElement = document.getElementById('timer');
     let timer;
 
+    // Testni boshlash funksiyasi
     function startTest() {
         document.getElementById('startSection').style.display = 'none';
         document.getElementById('testForm').style.display = 'block';
         timerElement.style.display = 'block';
         
         timer = setInterval(() => {
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-        timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        
-        if (timeLeft === 0) {
-            clearInterval(timer);
-            document.getElementById('testForm').submit();
-        }
-        timeLeft--;
-    }, 1000);
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeLeft === 0) {
+                clearInterval(timer);
+                document.getElementById('testForm').submit(); // Formani yuborish
+            }
+            timeLeft--;
+        }, 1000);
+    }
 
+    // Testni oldindan yakunlash funksiyasi
     function submitForm() {
-        if (confirm('Are you sure you want to finish the test early?')) {
+        if (confirm('Сиз тестни эртроқ тугатишни истайсизми?')) {
             document.getElementById('testForm').submit();
         }
     }
-}
 </script>
 @endpush
+@endsection

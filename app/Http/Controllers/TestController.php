@@ -13,34 +13,40 @@ class TestController extends Controller
 {
     public function start()
     {
-        // First get distinct questions
+        // Avval savollarning barcha ID-larini olish
         $questionIds = Question::select('id')
             ->distinct()
             ->pluck('id')
             ->toArray();
             
-        // Then randomly select 30 from those IDs
+        // Savollarni tasodifiy aralashtirib, 30 ta tanlash
         $randomIds = collect($questionIds)
-            ->shuffle()
-            ->take(30)
+            ->shuffle() // Tasodifiy ravishda aralashtirish
+            ->take(50) // 30 ta savolni tanlash
             ->values();
             
-        // Finally get the questions with those IDs
+        // Tanlangan savollarni olish
         $questions = Question::whereIn('id', $randomIds)->get();
         
-        // Load and randomize options for each question
+        // Har bir savol uchun javoblarni aralashtirish
         foreach ($questions as $question) {
-            $options = $question->options()->get()->shuffle()->values();
+            $options = $question->options()->get()->shuffle();
+            $question->randomOptions = $options;
             $question->setRelation('options', $options);
         }
         
+        // Testni boshlash vaqti
         $testAttempt = TestAttempt::create([
             'started_at' => now(),
         ]);
-
+        
         return view('test.start', compact('questions', 'testAttempt'));
     }
     
+    
+    
+    
+
     public function submit(Request $request, TestAttempt $testAttempt)
     {
         $request->validate([
@@ -74,7 +80,7 @@ class TestController extends Controller
         ]);
         
         // Log the values for debugging
-        \Log::info('Test duration saved:', [
+        Log::info('Test duration saved:', [
             'minutes' => $minutes,
             'seconds' => $seconds,
             'test_id' => $testAttempt->id
@@ -86,16 +92,24 @@ class TestController extends Controller
     public function result(TestAttempt $testAttempt)
     {
         $testAttempt->load(['answers.question.options', 'answers.selectedOption']);
-        $minutes = $testAttempt->duration_minutes;
-        $seconds = $testAttempt->duration_seconds;
         
-        return view('test.result', compact('testAttempt', 'minutes', 'seconds'));
+        // Agar answers bo‘sh bo‘lsa
+        if ($testAttempt->answers->isEmpty()) {
+            return redirect()->route('test.history')->with('error', 'Bu testga oid javoblar topilmadi.');
+        }
+    
+        // Endi firstWhere() metodini xavfsiz ishlatish mumkin
+        $selectedAnswer = $testAttempt->answers->firstWhere('question_id', 1); // Misol
+    
+        return view('test.result', compact('testAttempt'));
     }
+    
+    
     
     public function history()
     {
         $attempts = TestAttempt::with('answers')
-            ->orderBy('created_at', 'desc')
+            // ->orderBy('created_at', 'desc')
             ->get()
             ->map(function ($attempt) {
                 Log::info('Test attempt duration:', [

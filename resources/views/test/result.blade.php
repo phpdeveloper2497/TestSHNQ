@@ -27,6 +27,7 @@
                         <div class="question-container mb-4 {{ $answer->selectedOption->is_correct ? 'border-success' : 'border-danger' }} border p-3">
                             <h5>{{ $index + 1 }}. {{ $answer->question->question_text }}</h5>
                             @foreach($answer->question->options as $option)
+                            @if(($option->id === $answer->selectedOption->id && !$option->is_correct) || $option->is_correct)
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" 
                                         disabled
@@ -42,6 +43,7 @@
                                         @endif
                                     </label>
                                 </div>
+                                @endif
                             @endforeach
                         </div>
                     @endforeach
