@@ -67,7 +67,6 @@ class QuestionController extends Controller
     }
 }
 
-
     public function edit(Question $question)
     {
         $question->load('options');
