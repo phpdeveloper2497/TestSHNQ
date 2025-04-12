@@ -20,7 +20,6 @@ class QuestionController extends Controller
         return view('questions.index', compact('questions'));
     }
 
-
     public function create()
     {
         return view('questions.create');
