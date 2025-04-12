@@ -6,11 +6,16 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3>САВОЛЛАР</h3> 
+                    <h3>САВОЛЛАР</h3>
                     <h4>Базадаги жами саволлар сони: {{ $questions->count() }}</h4>
                     <a href="{{ route('questions.create') }}" class="btn btn-primary">ЯНГИ САВОЛ КУШИШ</a>
                 </div>
-
+                <div class="container mt-4">
+                    <form action="{{ route('questions.index') }}" method="GET" class="d-flex justify-content-start align-items-center" style="gap: 10px;">
+                        <input type="text" name="search" class="form-control w-25" placeholder="Саволни қидириш..." value="{{ request('search') }}">
+                        <button type="submit" class="btn btn-secondary">Қидириш</button>
+                    </form>
+                </div>
                 <div class="card-body">
                     @if(session('success'))
                         <div class="alert alert-success">

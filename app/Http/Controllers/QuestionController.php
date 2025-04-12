@@ -7,11 +7,19 @@ use App\Models\Question;
 
 class QuestionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $questions = Question::with('options')->orderBy('id', 'desc')->get();
+        $query = Question::with('options')->orderBy('id', 'desc');
+
+        if ($request->has('search') && $request->search != '') {
+            $query->where('question_text', 'like', '%' . $request->search . '%');
+        }
+
+        $questions = $query->get();
+
         return view('questions.index', compact('questions'));
     }
+
 
     public function create()
     {
@@ -60,7 +68,7 @@ class QuestionController extends Controller
     }
 }
 
-    
+
     public function edit(Question $question)
     {
         $question->load('options');
