@@ -86,7 +86,7 @@ class QuestionController extends Controller
             'question_text' => $request->question_text
         ]);
 
-        // Delete existing options
+
         $question->options()->delete();
 
         // Create new options
