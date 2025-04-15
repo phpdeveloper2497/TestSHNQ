@@ -22,7 +22,7 @@ class TestController extends Controller
         // Savollarni tasodifiy aralashtirib, 30 ta tanlash
         $randomIds = collect($questionIds)
             ->shuffle() // Tasodifiy ravishda aralashtirish
-            ->take(80) // 100 ta savolni tanlash
+            ->take(100) // 100 ta savolni tanlash
             ->values();
 
         // Tanlangan savollarni olish
