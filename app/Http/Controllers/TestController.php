@@ -19,10 +19,9 @@ class TestController extends Controller
             ->pluck('id')
             ->toArray();
 
-        // Savollarni tasodifiy aralashtirib, 30 ta tanlash
         $randomIds = collect($questionIds)
             ->shuffle() // Tasodifiy ravishda aralashtirish
-            ->take(100) // 100 ta savolni tanlash
+            ->take(200) // 200 ta savolni tanlash
             ->values();
 
         // Tanlangan savollarni olish
